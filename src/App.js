@@ -15,7 +15,7 @@ export default function App() {
         <img src={ logo } className="App-logo" alt="logo" />
         <p>SUA VEZ</p>
         <Route exact path="/" render={ (props) => <Login { ...props } /> } />
-        <Route path="/game" render={ (props) => <Game { ...props } /> } />
+        <Route path="/game" render={ () => <Game /> } />
         <Route path="/settings" render={ () => <Settings /> } />
         <Route path="/feedbacks" render={ () => <Feedbacks /> } />
         <Route path="/ranking" render={ () => <Ranking /> } />

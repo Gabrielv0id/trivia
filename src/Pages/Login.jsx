@@ -17,6 +17,15 @@ class Login extends Component {
     history.push('/game');
   };
 
+  startGame = async () => {
+    const { history } = this.props;
+    const response = await fetch('https://opentdb.com/api_token.php?command=request');
+    const json = await response.json();
+    const { token } = json;
+    localStorage.setItem('token', token);
+    history.push('/game');
+  };
+
   validateButton = () => {
     const { email, name } = this.state;
     if (email.length > 0 && name.length > 0) {
@@ -62,6 +71,7 @@ class Login extends Component {
           data-testid="btn-play"
           disabled={ isButtonInvalid }
           onClick={ this.startGame }
+          onClick={ this.startGame }
         >
           Play
         </button>
@@ -77,6 +87,12 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 Login.propTypes = {
   history: PropTypes.shape({
