@@ -9,6 +9,11 @@ class Game extends Component {
     currentQuestion: 0,
     questions: [],
     awnsered: false,
+    category: '',
+    difficulty: '',
+    text: '',
+    correctAwnser: '',
+    incorrectAwnser: [],
   };
 
   componentDidMount() {
@@ -17,14 +22,29 @@ class Game extends Component {
   }
 
   setQuestions = async () => {
+    const { history } = this.props;
     const response = await questionsAPI();
 
-    this.setState();
+    // If response_code is invalid, return to initial page
+    if (!response) history.push('/');
+
+    const { category, difficulty, question } = results;
+    const correctAwnser = results.correct_awnser;
+    const incorrectAwnser = results.incorrect_answers;
+
+    this.setState({
+      category,
+      difficulty,
+      text: question,
+      questions: [results.correct_awnser, ...results.incorrectAwnser],
+      correctAwnser,
+      incorrectAwnser,
+    });
   };
 
   render() {
-    const { currentQuestion, questions, awnsered } = this.state;
-    console.log(currentQuestion, questions, awnsered);
+    const { currentQuestion, questions, awnsered,
+      category, difficulty, text, correctAwnser, incorrectAwnser } = this.state;
     // const { prop1, dispatch } = this.props;
     return (
       <div>
@@ -41,5 +61,8 @@ const mapStateToProps = (state) => ({
 Game.propTypes = {
   // prop1: PropTypes.string.isRequired,
   // dispatch: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 export default connect(mapStateToProps)(Game);
