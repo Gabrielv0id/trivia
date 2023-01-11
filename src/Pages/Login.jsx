@@ -43,19 +43,18 @@ class Login extends Component {
           type="email"
           data-testid="input-gravatar-email"
           name="email"
-          value={ name }
+          value={ email }
           onChange={ this.handleChange }
         />
         <input
           type="text"
           data-testid="input-player-name"
           name="name"
-          value={ email }
+          value={ name }
           onChange={ this.handleChange }
         />
         <button
           type="button"
-          // onClick={ startGame }
           data-testid="btn-play"
           disabled={ isButtonInvalid }
           onClick={ this.startGame }
