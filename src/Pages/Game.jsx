@@ -1,6 +1,7 @@
 // import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import Header from '../Components/Header';
 
 class Game extends Component {
   state = {
@@ -14,7 +15,9 @@ class Game extends Component {
     console.log(currentQuestion, questions, awnsered);
     // const { prop1, dispatch } = this.props;
     return (
-      <div>content</div>
+      <div>
+        <Header />
+      </div>
     );
   }
 }
