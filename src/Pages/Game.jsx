@@ -1,6 +1,7 @@
 // import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import questionsAPI from '../API/questionsAPI';
 import Header from '../Components/Header';
 
 class Game extends Component {
@@ -8,6 +9,17 @@ class Game extends Component {
     currentQuestion: 0,
     questions: [],
     awnsered: false,
+  };
+
+  componentDidMount() {
+    const token = localStorage.getItem('token');
+    const response = this.setQuestions();
+  }
+
+  setQuestions = async () => {
+    const response = await questionsAPI();
+
+    this.setState();
   };
 
   render() {
