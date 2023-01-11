@@ -8,4 +8,8 @@ const rootReducer = combineReducers({
 
 const store = createStore(rootReducer, composeWithDevTools());
 
+if (window.Cypress) {
+  window.store = store;
+}
+
 export default store;
