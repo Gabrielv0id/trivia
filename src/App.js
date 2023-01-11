@@ -14,7 +14,7 @@ export default function App() {
       <header className="App-header">
         <img src={ logo } className="App-logo" alt="logo" />
         <p>SUA VEZ</p>
-        <Route exact path="/" render={ (props) => <Login {...props} /> } />
+        <Route exact path="/" render={ (props) => <Login { ...props } /> } />
         <Route path="/game" render={ () => <Game /> } />
         <Route path="/settings" render={ () => <Settings /> } />
         <Route path="/feedbacks" render={ () => <Feedbacks /> } />
