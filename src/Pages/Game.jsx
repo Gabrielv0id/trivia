@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import questionsAPI from '../API/questionsAPI';
 import Header from '../Components/Header';
+import Timer from '../Components/Timer';
 
 class Game extends Component {
   state = {
@@ -16,11 +17,21 @@ class Game extends Component {
     text: '',
     correctAnswer: '',
     incorrectAnswers: [],
+    correctAwnser: '',
+    incorrectAwnser: [],
+    // This property is managed by 'Timer' child component
+    timerHandle: {
+      timerFinished: false,
+      startTimer: () => {},
+    },
   };
 
   componentDidMount() {
+    const { timerHandle: { startTimer } } = this.state;
     const token = localStorage.getItem('token');
     this.getQuestions(token);
+    const response = this.setQuestions();
+    startTimer();
   }
 
   setQuestions = () => {
@@ -77,6 +88,7 @@ class Game extends Component {
           )}
         </div>
 
+        <Timer parentSetState={ this.setState } />
       </div>
     );
   }
