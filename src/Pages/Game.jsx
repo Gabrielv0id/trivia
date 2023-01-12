@@ -33,6 +33,7 @@ class Game extends Component {
     startTimer();
   }
 
+
   setQuestions = () => {
     const { questions, currentQuestion } = this.state;
     const { category, difficulty, question } = questions[currentQuestion];
