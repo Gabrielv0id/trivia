@@ -15,3 +15,4 @@ export const setNameNadEmailAction = ({ name, email }) => ({
 export const setNewScore = (newScore) => ({
   type: SET_NEW_SCORE,
   payload: { score: newScore },
+});
