@@ -7,6 +7,7 @@ class Feedbacks extends Component {
   render() {
     const { player } = this.props;
     const { score, assertions } = player;
+    const value = 3;
     return (
       <div data-testid="feedback-text">
         <Header />
@@ -17,7 +18,7 @@ class Feedbacks extends Component {
           {assertions}
         </h3>
         {
-          (assertions < 3) ? <span>Could be better...</span> : <span>Well Done!</span>
+          (assertions < value) ? <span>Could be better...</span> : <span>Well Done!</span>
         }
       </div>
     );
