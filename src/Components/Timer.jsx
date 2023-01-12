@@ -17,12 +17,16 @@ class Timer extends Component {
     // Set parent component way of managing 'Timer' component
     // The 'if' is so startTimer function is lifted up only
     // the first time the 'Timer' is rendered.
+    // Also, it concentrates all logic that manipulate the father component
+    // is this function.
+    const { timer } = this.state;
     const { parentSetState } = this.props;
 
     if (firstTime) {
       parentSetState({
         timerHandle: {
           timerFinished: timerFinishedState,
+          timerValueWhenFinished: timer,
           startTimer: this.startTimer,
         },
       });
@@ -33,6 +37,7 @@ class Timer extends Component {
         timerHandle: {
           ...prevState.timerHandle,
           timerFinished: timerFinishedState,
+          timerValueWhenFinished: timer,
         },
       }
     ));

@@ -22,6 +22,7 @@ class Game extends Component {
     // This property is managed by 'Timer' child component
     timerHandle: {
       timerFinished: false,
+      timerValueWhenFinished: 0,
       startTimer: () => {},
     },
   };
