@@ -1,6 +1,5 @@
-// import PropTypes from 'prop-types';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class Login extends Component {
   state = {
@@ -35,6 +34,11 @@ class Login extends Component {
     this.validateButton();
   };
 
+  redirect = () => {
+    const { history } = this.props;
+    history.push('/settings');
+  };
+
   render() {
     const { name, email, isButtonInvalid } = this.state;
     return (
@@ -61,6 +65,14 @@ class Login extends Component {
         >
           Play
         </button>
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ this.redirect }
+        >
+          Setting
+        </button>
+
       </div>
     );
   }
