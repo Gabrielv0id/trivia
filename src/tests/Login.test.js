@@ -39,4 +39,9 @@ describe('Testa a página de login e..', () => {
         userEvent.click(playButton);
         expect(global.fetch).toHaveBeenCalled();
     })
+    test('Verifica se ao clickar no settings é apropriadamente redirecionado', () => {
+        renderWithRouterAndRedux(<App />);
+        const settingsButtons = screen.getByRole('button', { name: /Setting/ });
+        userEvent.click(settingsButtons);
+    })
 })
