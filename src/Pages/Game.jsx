@@ -3,21 +3,21 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import questionsAPI from '../API/questionsAPI';
 import Header from '../Components/Header';
-import Timer from '../Components/Timer';
+// import Timer from '../Components/Timer';
 import shuffle from '../util/shuffle';
 
 class Game extends Component {
   state = {
     currentQuestion: 0,
     questions: [],
-    hasAwnsered: false,
+    hasAnswered: false,
     category: '',
     difficulty: '',
     text: '',
     correctAnswer: '',
     incorrectAnswers: [],
-    correctAwnser: '',
-    incorrectAwnser: [],
+    shuffledAnswers: [],
+
     // This property is managed by 'Timer' child component
     timerHandle: {
       timerFinished: false,
@@ -36,16 +36,16 @@ class Game extends Component {
   setQuestions = () => {
     const { questions, currentQuestion } = this.state;
     const { category, difficulty, question } = questions[currentQuestion];
-    const correctAwnser = results.correct_awnser;
-    const incorrectAwnser = results.incorrect_answers;
+    const correctAnswer = questions[currentQuestion].correct_answer;
+    const incorrectAnswers = questions[currentQuestion].incorrect_answers;
 
     this.setState({
       category,
       difficulty,
       text: question,
-      shuffledAwnsers: shuffle([results.correct_awnser, ...results.incorrectAwnser]),
-      correctAwnser,
-      incorrectAwnser,
+      shuffledAnswers: shuffle([correctAnswer, ...incorrectAnswers]),
+      correctAnswer,
+      incorrectAnswers,
     });
   };
 
@@ -57,44 +57,50 @@ class Game extends Component {
     if (!response) history.push('/');
 
     this.setState({
-      questions: response.results,
+      questions: response,
     }, this.setQuestions);
   };
 
+  renderShuffledAnswer = () => {
+    const { correctAnswer, shuffledAnswers } = this.state;
+
+    let currentWrongIndex = 0;
+    return shuffledAnswers.map((answer) => {
+      let dataTestId;
+      if (answer !== correctAnswer) {
+        dataTestId = `wrong-answer-${currentWrongIndex}`;
+        currentWrongIndex += 1;
+      } else {
+        dataTestId = 'correct-answer';
+      }
+      return (
+        <button
+          key={ dataTestId }
+          type="button"
+          className={ dataTestId }
+          data-testid={ dataTestId }
+        >
+          { answer }
+        </button>
+      );
+    });
+  };
+
   render() {
-    const { hasAwnsered,
-      category, difficulty, text, correctAwnser, incorrectAwnser, shuffledAwnsers } = this.state;
+    const { hasAnswered, category, text, difficulty, incorrectAnswers } = this.state;
+    // const { setState } = this;
     // const { prop1, dispatch } = this.props;
+    console.log(hasAnswered, difficulty, incorrectAnswers);
     return (
       <div>
         <Header />
-
-        <p data-testid="question-category">
-          Category:
-          {category}
-        </p>
-
-        <p data-testid="question-text">{questions[currentQuestion].question}</p>
-
-        <div data-testid="answer-options">
-          <button type="button" data-testid="correct-answer">
-            {correctAnswer}
-          </button>
-
-          {incorrectAnswers.map(
-            (answer) => <button key={ answer } type="button">{answer}</button>,
-          )}
-        </div>
-
-        <Timer parentSetState={ this.setState } />
+        {/* <Timer parentSetState={ setState } /> */}
         <div id="game-questions">
-          <h2 data-testid="question-category"></h2>
-          <h2 data-testid="question-text"></h2>
-          {
-            shuffledAwnsers.map(() => {
-              
-            })
-          }
+          <h2 data-testid="question-category">{ category }</h2>
+          <h2 data-testid="question-text">{ text }</h2>
+          <div data-testid="answer-options">
+            { this.renderShuffledAnswer() }
+          </div>
         </div>
       </div>
     );
