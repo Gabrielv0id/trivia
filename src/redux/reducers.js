@@ -1,4 +1,4 @@
-import { EXEMPLO_ACTION } from './actions';
+import { EXEMPLO_ACTION, SET_NAME_AND_EMAIL, SET_NEW_SCORE } from './actions';
 
 const INITIAL_STATE = {
   name: 'nome-da-pessoa',
@@ -11,6 +11,17 @@ const playerReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case EXEMPLO_ACTION:
     return { ...state };
+  case SET_NAME_AND_EMAIL:
+    return {
+      ...state,
+      name: action.payload.name,
+      gravatarEmail: action.payload.email,
+    };
+  case SET_NEW_SCORE:
+    return {
+      ...state,
+      score: action.payload.score,
+    };
   default:
     return { ...state };
   }
