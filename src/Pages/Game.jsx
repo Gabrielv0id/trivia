@@ -23,19 +23,17 @@ class Game extends Component {
     timerHandle: {
       timerFinished: false,
       timerValueWhenFinished: 0,
-      startTimer: this.mockTimer,
-      stopTimer: this.mockTimer,
+      startTimer: () => {},
+      stopTimer: () => {},
     },
   };
 
   componentDidMount() {
-    const { timerHandle: { startTimer } } = this.state;
+    const { timerHandle } = this.state;
     const token = localStorage.getItem('token');
     this.getQuestions(token);
-    startTimer();
+    timerHandle.startTimer();
   }
-
-  mockTimer = () => {};
 
   setQuestions = () => {
     const { questions, currentQuestion } = this.state;
@@ -66,9 +64,39 @@ class Game extends Component {
   };
 
   triggerAnswer = () => {
-    const { timerHandle: { stopTimer } } = this.state;
-    stopTimer();
+    const { timerHandle } = this.state;
+    timerHandle.stopTimer();
     this.setState({ hasAnswered: true });
+  };
+
+  manageParentComponent = (
+    firstTime = false,
+    timerFinishedState,
+    startTimer,
+    stopTimer,
+  ) => {
+    // Set parent component way of managing 'Timer' component
+    const { timer } = this.state;
+    if (firstTime) {
+      this.setState({
+        timerHandle: {
+          timerFinished: timerFinishedState,
+          timerValueWhenFinished: timer,
+          startTimer,
+          stopTimer,
+        },
+      });
+      return;
+    }
+    this.setState((prevState) => (
+      {
+        timerHandle: {
+          ...prevState.timerHandle,
+          timerFinished: timerFinishedState,
+          timerValueWhenFinished: timer,
+        },
+      }
+    ));
   };
 
   renderShuffledAnswer = () => {
@@ -103,13 +131,12 @@ class Game extends Component {
 
   render() {
     const { hasAnswered, category, text, difficulty, incorrectAnswers } = this.state;
-    const { setState } = this;
     // const { prop1, dispatch } = this.props;
     console.log(hasAnswered, difficulty, incorrectAnswers);
     return (
       <div>
         <Header />
-        <Timer parentSetState={ setState } />
+        <Timer manageParentComponent={ this.manageParentComponent } />
         <div id="game-questions">
           <h2 data-testid="question-category">{ category }</h2>
           <h2 data-testid="question-text">{ text }</h2>
