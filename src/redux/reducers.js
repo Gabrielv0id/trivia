@@ -1,4 +1,6 @@
-import { EXEMPLO_ACTION, SET_NAME_AND_EMAIL, SET_NEW_SCORE } from './actions';
+import {
+  EXEMPLO_ACTION, SET_NAME_AND_EMAIL, SET_NEW_SCORE, SET_ASSERTIONS,
+} from './actions';
 
 const INITIAL_STATE = {
   name: 'nome-da-pessoa',
@@ -21,6 +23,11 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       score: action.payload.score,
+    };
+  case SET_ASSERTIONS:
+    return {
+      ...state,
+      assertions: action.payload.assertions,
     };
   default:
     return { ...state };
