@@ -1,4 +1,4 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import questionsAPI from '../API/questionsAPI';
@@ -26,7 +26,7 @@ class Game extends Component {
   componentDidMount() {
     const { timerHandle: { startTimer } } = this.state;
     const token = localStorage.getItem('token');
-    const response = this.setQuestions();
+    this.setQuestions();
     startTimer();
   }
 
@@ -54,6 +54,8 @@ class Game extends Component {
   render() {
     const { currentQuestion, questions, awnsered,
       category, difficulty, text, correctAwnser, incorrectAwnser } = this.state;
+    console.log(currentQuestion, questions, awnsered);
+    console.log(category, difficulty, text, correctAwnser, incorrectAwnser);
     // const { prop1, dispatch } = this.props;
     return (
       <div>
