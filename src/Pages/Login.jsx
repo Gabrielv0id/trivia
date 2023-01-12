@@ -16,7 +16,6 @@ class Login extends Component {
     const response = await fetch('https://opentdb.com/api_token.php?command=request');
     const json = await response.json();
     const { token } = json;
-
     localStorage.setItem('token', token);
     dispatch(setNameNadEmailAction({ email, name }));
     history.push('/game');
