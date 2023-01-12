@@ -4,14 +4,13 @@ import React, { Component } from 'react';
 import questionsAPI from '../API/questionsAPI';
 import Header from '../Components/Header';
 import Timer from '../Components/Timer';
+import shuffle from '../util/shuffle';
 
 class Game extends Component {
   state = {
     currentQuestion: 0,
-    questions: [{
-      question: 'ei hey',
-    }],
-    answered: false,
+    questions: [],
+    hasAwnsered: false,
     category: '',
     difficulty: '',
     text: '',
@@ -31,45 +30,40 @@ class Game extends Component {
     const { timerHandle: { startTimer } } = this.state;
     const token = localStorage.getItem('token');
     this.getQuestions(token);
-    const response = this.setQuestions();
-    this.setQuestions();
     startTimer();
   }
 
   setQuestions = () => {
     const { questions, currentQuestion } = this.state;
     const { category, difficulty, question } = questions[currentQuestion];
-    const correctAnswer = questions[currentQuestion].correct_answer;
-    const incorrectAnswers = questions[currentQuestion].incorrect_answers;
+    const correctAwnser = results.correct_awnser;
+    const incorrectAwnser = results.incorrect_answers;
 
     this.setState({
       category,
       difficulty,
       text: question,
-      correctAnswer,
-      incorrectAnswers,
+      shuffledAwnsers: shuffle([results.correct_awnser, ...results.incorrectAwnser]),
+      correctAwnser,
+      incorrectAwnser,
     });
   };
 
-  getQuestions = async (param) => {
+  getQuestions = async (token) => {
     const { history } = this.props;
-    const response = await questionsAPI(param);
+    const response = await questionsAPI(token);
 
     // If response_code is invalid, return to initial page
-    if (!response) {
-      history.push('/');
-      localStorage.removeItem('token');
-    }
+    if (!response) history.push('/');
+
     this.setState({
-      questions: response,
+      questions: response.results,
     }, this.setQuestions);
   };
 
   render() {
-    const { currentQuestion, questions, answered,
-      category, difficulty, text, correctAnswer, incorrectAnswers } = this.state;
-    console.log(currentQuestion, questions, awnsered);
-    console.log(category, difficulty, text, correctAwnser, incorrectAwnser);
+    const { hasAwnsered,
+      category, difficulty, text, correctAwnser, incorrectAwnser, shuffledAwnsers } = this.state;
     // const { prop1, dispatch } = this.props;
     return (
       <div>
@@ -93,6 +87,15 @@ class Game extends Component {
         </div>
 
         <Timer parentSetState={ this.setState } />
+        <div id="game-questions">
+          <h2 data-testid="question-category"></h2>
+          <h2 data-testid="question-text"></h2>
+          {
+            shuffledAwnsers.map(() => {
+              
+            })
+          }
+        </div>
       </div>
     );
   }
