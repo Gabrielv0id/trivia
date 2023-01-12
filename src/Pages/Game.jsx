@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import questionsAPI from '../API/questionsAPI';
 import Header from '../Components/Header';
-// import Timer from '../Components/Timer';
+import Timer from '../Components/Timer';
+import '../style/answersColors.style.css';
 import shuffle from '../util/shuffle';
 
 class Game extends Component {
@@ -23,6 +24,7 @@ class Game extends Component {
       timerFinished: false,
       timerValueWhenFinished: 0,
       startTimer: () => {},
+      stopTimer: () => {},
     },
   };
 
@@ -61,24 +63,35 @@ class Game extends Component {
     }, this.setQuestions);
   };
 
+  triggerAnswer = () => {
+    const { timerHandle: { stopTimer } } = this.state;
+    stopTimer();
+    this.setState({ hasAnswered: true });
+  };
+
   renderShuffledAnswer = () => {
-    const { correctAnswer, shuffledAnswers } = this.state;
+    const { correctAnswer, shuffledAnswers, hasAnswered } = this.state;
 
     let currentWrongIndex = 0;
     return shuffledAnswers.map((answer) => {
       let dataTestId;
+      let eleClass;
       if (answer !== correctAnswer) {
         dataTestId = `wrong-answer-${currentWrongIndex}`;
+        eleClass = 'wrong';
         currentWrongIndex += 1;
       } else {
         dataTestId = 'correct-answer';
+        eleClass = 'correct';
       }
       return (
         <button
           key={ dataTestId }
           type="button"
-          className={ dataTestId }
+          className={ hasAnswered ? eleClass : '' }
           data-testid={ dataTestId }
+          onClick={ this.triggerAnswer }
+          disabled={ hasAnswered }
         >
           { answer }
         </button>
@@ -88,7 +101,7 @@ class Game extends Component {
 
   render() {
     const { hasAnswered, category, text, difficulty, incorrectAnswers } = this.state;
-    // const { setState } = this;
+    const { setState } = this;
     // const { prop1, dispatch } = this.props;
     console.log(hasAnswered, difficulty, incorrectAnswers);
     return (
