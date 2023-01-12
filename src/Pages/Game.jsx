@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import questionsAPI from '../API/questionsAPI';
 import Header from '../Components/Header';
-// import Timer from '../Components/Timer';
+import Timer from '../Components/Timer';
 import '../style/answersColors.style.css';
 import shuffle from '../util/shuffle';
+import { setNewScore } from '../redux/actions';
 
 class Game extends Component {
   state = {
@@ -20,22 +21,20 @@ class Game extends Component {
     shuffledAnswers: [],
 
     // This property is managed by 'Timer' child component
-    /* timerHandle: {
+    timerHandle: {
       timerFinished: false,
       timerValueWhenFinished: 0,
-      startTimer: this.mockTimer,
-      stopTimer: this.mockTimer,
-    }, */
+      startTimer: () => {},
+      stopTimer: () => {},
+    },
   };
 
   componentDidMount() {
-    // const { timerHandle: { startTimer } } = this.state;
+    const { timerHandle: { startTimer } } = this.state;
     const token = localStorage.getItem('token');
     this.getQuestions(token);
-    // startTimer();
+    startTimer();
   }
-
-  // mockTimer = () => {};
 
   setQuestions = () => {
     const { questions, currentQuestion } = this.state;
@@ -65,9 +64,32 @@ class Game extends Component {
     }, this.setQuestions);
   };
 
+  updateScore = ({ target }) => {
+    const { player: { score }, dispatch } = this.props;
+    const { timerHandle: { timerValueWhenFinished }, difficulty } = this.state;
+    const buttonTestId = target.getAttribute('data-testid');
+    let difficultySum;
+    switch(difficulty) {
+      case 'easy':
+        difficultySum = 1;
+      break;
+      case 'medium':
+        difficultySum = 2;
+      break;
+      case 'hard':
+        difficultySum = 3;
+      break;
+    }
+    if (buttonTestId.match(/correct-answer/)) {
+      const newScore = score + 10 + (timerValueWhenFinished * difficultySum);
+      console.log(newScore);
+      dispatch(setNewScore(newScore));
+    }
+  }
+
   triggerAnswer = () => {
-    // const { timerHandle: { stopTimer } } = this.state;
-    // stopTimer();
+    const { timerHandle: { stopTimer } } = this.state;
+    stopTimer();
     this.setState({ hasAnswered: true });
   };
 
@@ -92,7 +114,10 @@ class Game extends Component {
           type="button"
           className={ hasAnswered ? eleClass : '' }
           data-testid={ dataTestId }
-          onClick={ this.triggerAnswer }
+          onClick={ (e) => { 
+            this.triggerAnswer()
+            this.updateScore(e) 
+          } }
           disabled={ hasAnswered }
         >
           { answer }
@@ -103,7 +128,7 @@ class Game extends Component {
 
   render() {
     const { hasAnswered, category, text, difficulty, incorrectAnswers } = this.state;
-    // const { setState } = this;
+    const { setState } = this;
     // const { prop1, dispatch } = this.props;
     console.log(hasAnswered, difficulty, incorrectAnswers);
     return (
