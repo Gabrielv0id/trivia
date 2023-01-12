@@ -12,6 +12,7 @@ class Feedbacks extends Component {
   render() {
     const { player } = this.props;
     const { score, assertions } = player;
+    const value = 3;
 
     return (
       <div data-testid="feedback-text">
@@ -25,6 +26,10 @@ class Feedbacks extends Component {
         <button type="button" data-testid="btn-play-again" onClick={ this.redirect }>
           Play Again
         </button>
+        {
+          (assertions < value) ? <span>Could be better...</span> : <span>Well Done!</span>
+        }
+
       </div>
     );
   }
