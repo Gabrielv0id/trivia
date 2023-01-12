@@ -8,41 +8,9 @@ class Timer extends Component {
   };
 
   componentDidMount() {
-    const FIRST_TIME = true;
-    const TIMER_FINISHED = false;
-    this.manageParentComponent(FIRST_TIME, TIMER_FINISHED);
+    const { setTimerStartAndStop } = this.props;
+    setTimerStartAndStop(this.startTimer, this.stopTimer);
   }
-
-  manageParentComponent = (firstTime = false, timerFinishedState) => {
-    // Set parent component way of managing 'Timer' component
-    // The 'if' is so startTimer function is lifted up only
-    // the first time the 'Timer' is rendered.
-    // Also, it concentrates all logic that manipulate the father component
-    // is this function.
-    const { timer } = this.state;
-    const { parentSetState } = this.props;
-
-    if (firstTime) {
-      parentSetState({
-        timerHandle: {
-          timerFinished: timerFinishedState,
-          timerValueWhenFinished: timer,
-          startTimer: this.startTimer,
-          stopTimer: this.triggerFinishedTimer,
-        },
-      });
-      return;
-    }
-    parentSetState((prevState) => (
-      {
-        timerHandle: {
-          ...prevState.timerHandle,
-          timerFinished: timerFinishedState,
-          timerValueWhenFinished: timer,
-        },
-      }
-    ));
-  };
 
   stopTimer = () => {
     const { timerId } = this.state;
@@ -50,10 +18,13 @@ class Timer extends Component {
   };
 
   triggerFinishedTimer = () => {
+    const { timer } = this.state;
+    const { setTimerHandleState, triggerAnswer } = this.props;
+
+    const HAS_TIMER_FINISHED = true;
     this.stopTimer();
-    const FIRST_TIME = false;
-    const TIMER_FINISHED = true;
-    this.manageParentComponent(FIRST_TIME, TIMER_FINISHED);
+    setTimerHandleState(HAS_TIMER_FINISHED, timer);
+    triggerAnswer();
   };
 
   decreaseTimer = () => {
@@ -71,16 +42,17 @@ class Timer extends Component {
   };
 
   setTimerInitialState = () => {
+    const { setTimerHandleState } = this.props;
     this.setState({
       timer: 30,
     });
-    const FIRST_TIME = false;
-    const TIMER_FINISHED = false;
-    this.manageParentComponent(FIRST_TIME, TIMER_FINISHED);
+    const HAS_TIMER_FINISHED = false;
+    const THIRTY_SECONDS = 30;
+    setTimerHandleState(HAS_TIMER_FINISHED, THIRTY_SECONDS);
   };
 
   startTimer = () => {
-    const THREE_SECONDS = 3000;
+    const THREE_SECONDS = 1000;
     const ONE_SECOND = 1000;
     this.setTimerInitialState();
 
@@ -102,7 +74,9 @@ class Timer extends Component {
 }
 
 Timer.propTypes = {
-  parentSetState: PropTypes.func.isRequired,
+  setTimerHandleState: PropTypes.func.isRequired,
+  triggerAnswer: PropTypes.func.isRequired,
+  setTimerStartAndStop: PropTypes.func.isRequired,
 };
 
 export default Timer;
