@@ -7,7 +7,6 @@ const INITIAL_STATE = {
   gravatarEmail: 'email-da-pessoa',
 };
 const playerReducer = (state = INITIAL_STATE, action) => {
-  console.log(state, action);
   switch (action.type) {
   case EXEMPLO_ACTION:
     return { ...state };

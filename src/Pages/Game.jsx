@@ -84,7 +84,6 @@ class Game extends Component {
     }
     if (buttonTestId.match(/correct-answer/)) {
       const newScore = score + TEN_POINTS + (timerValueWhenFinished * difficultySum);
-      console.log(newScore);
       dispatch(setNewScore(newScore));
     }
   };
