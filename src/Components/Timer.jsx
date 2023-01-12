@@ -57,7 +57,7 @@ class Timer extends Component {
   };
 
   startTimer = () => {
-    const THREE_SECONDS = 3000;
+    const THREE_SECONDS = 1000;
     const ONE_SECOND = 1000;
     this.setTimerInitialState();
 

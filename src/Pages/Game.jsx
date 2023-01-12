@@ -29,14 +29,12 @@ class Game extends Component {
   };
 
   componentDidMount() {
-    const { timerHandle } = this.state;
     const token = localStorage.getItem('token');
     this.getQuestions(token);
-    timerHandle.startTimer();
   }
 
   setQuestions = () => {
-    const { questions, currentQuestion } = this.state;
+    const { questions, currentQuestion, timerHandle } = this.state;
     const { category, difficulty, question } = questions[currentQuestion];
     const correctAnswer = questions[currentQuestion].correct_answer;
     const incorrectAnswers = questions[currentQuestion].incorrect_answers;
@@ -49,6 +47,7 @@ class Game extends Component {
       correctAnswer,
       incorrectAnswers,
     });
+    timerHandle.startTimer();
   };
 
   getQuestions = async (token) => {
