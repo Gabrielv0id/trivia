@@ -16,6 +16,9 @@ class Feedbacks extends Component {
         <h3 data-testid="feedback-total-question">
           {assertions}
         </h3>
+        {
+          (assertions < 3) ? <span>Could be better...</span> : <span>Well Done!</span>
+        }
       </div>
     );
   }
