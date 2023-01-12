@@ -129,13 +129,19 @@ class Game extends Component {
   };
 
   render() {
-    const { hasAnswered, category, text, difficulty, incorrectAnswers } = this.state;
+    const { timerHandle,
+      hasAnswered, category, text, difficulty, incorrectAnswers } = this.state;
+    const { timerFinished } = timerHandle;
+
+    if (timerFinished) this.triggerAnswer();
     // const { prop1, dispatch } = this.props;
     console.log(hasAnswered, difficulty, incorrectAnswers);
     return (
       <div>
         <Header />
-        <Timer manageParentComponent={ this.manageParentComponent } />
+        <Timer
+          manageParentComponent={ this.manageParentComponent }
+        />
         <div id="game-questions">
           <h2 data-testid="question-category">{ category }</h2>
           <h2 data-testid="question-text">{ text }</h2>
