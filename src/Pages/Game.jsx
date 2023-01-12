@@ -23,22 +23,17 @@ class Game extends Component {
     /* timerHandle: {
       timerFinished: false,
       timerValueWhenFinished: 0,
-      startTimer: this.mockTimer,
-      stopTimer: this.mockTimer,
-    }, */
+      startTimer: () => {},
+      stopTimer: () => {},
+    },
   };
 
   componentDidMount() {
-    // const { timerHandle: { startTimer } } = this.state;
     const token = localStorage.getItem('token');
     this.getQuestions(token);
-    // startTimer();
   }
-
-  // mockTimer = () => {};
-
   setQuestions = () => {
-    const { questions, currentQuestion } = this.state;
+    const { questions, currentQuestion, timerHandle } = this.state;
     const { category, difficulty, question } = questions[currentQuestion];
     const correctAnswer = questions[currentQuestion].correct_answer;
     const incorrectAnswers = questions[currentQuestion].incorrect_answers;
@@ -51,6 +46,7 @@ class Game extends Component {
       correctAnswer,
       incorrectAnswers,
     });
+    timerHandle.startTimer();
   };
 
   getQuestions = async (token) => {
@@ -66,9 +62,31 @@ class Game extends Component {
   };
 
   triggerAnswer = () => {
-    // const { timerHandle: { stopTimer } } = this.state;
-    // stopTimer();
+    const { timerHandle } = this.state;
+    timerHandle.stopTimer();
     this.setState({ hasAnswered: true });
+  };
+
+  setTimerStartAndStop = (startTimer, stopTimer) => {
+    this.setState((prevState) => ({
+      timerHandle: {
+        ...prevState.timerHandle,
+        startTimer,
+        stopTimer,
+      },
+    }));
+  };
+
+  setTimerHandleState = (timerFinishedState, currentTime = 0) => {
+    this.setState((prevState) => (
+      {
+        timerHandle: {
+          ...prevState.timerHandle,
+          timerFinished: timerFinishedState,
+          timerValueWhenFinished: currentTime,
+        },
+      }
+    ));
   };
 
   renderShuffledAnswer = () => {
@@ -102,14 +120,21 @@ class Game extends Component {
   };
 
   render() {
-    const { hasAnswered, category, text, difficulty, incorrectAnswers } = this.state;
-    // const { setState } = this;
+    const { timerHandle,
+      hasAnswered, category, text, difficulty, incorrectAnswers } = this.state;
+    const { timerFinished } = timerHandle;
+
+    if (timerFinished) this.triggerAnswer();
     // const { prop1, dispatch } = this.props;
     console.log(hasAnswered, difficulty, incorrectAnswers);
     return (
       <div>
         <Header />
-        {/* <Timer parentSetState={ setState } /> */}
+        <Timer
+          setTimerHandleState={ this.setTimerHandleState }
+          setTimerStartAndStop={ this.setTimerStartAndStop }
+          triggerAnswer={ this.triggerAnswer }
+        />
         <div id="game-questions">
           <h2 data-testid="question-category">{ category }</h2>
           <h2 data-testid="question-text">{ text }</h2>
