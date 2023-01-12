@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import questionsAPI from '../API/questionsAPI';
 import Header from '../Components/Header';
-import Timer from '../Components/Timer';
+// import Timer from '../Components/Timer';
 import '../style/answersColors.style.css';
 import shuffle from '../util/shuffle';
 
@@ -20,22 +20,22 @@ class Game extends Component {
     shuffledAnswers: [],
 
     // This property is managed by 'Timer' child component
-    timerHandle: {
+    /* timerHandle: {
       timerFinished: false,
       timerValueWhenFinished: 0,
       startTimer: this.mockTimer,
       stopTimer: this.mockTimer,
-    },
+    }, */
   };
 
   componentDidMount() {
-    const { timerHandle: { startTimer } } = this.state;
+    // const { timerHandle: { startTimer } } = this.state;
     const token = localStorage.getItem('token');
     this.getQuestions(token);
-    startTimer();
+    // startTimer();
   }
 
-  mockTimer = () => {};
+  // mockTimer = () => {};
 
   setQuestions = () => {
     const { questions, currentQuestion } = this.state;
@@ -66,8 +66,8 @@ class Game extends Component {
   };
 
   triggerAnswer = () => {
-    const { timerHandle: { stopTimer } } = this.state;
-    stopTimer();
+    // const { timerHandle: { stopTimer } } = this.state;
+    // stopTimer();
     this.setState({ hasAnswered: true });
   };
 
@@ -103,13 +103,13 @@ class Game extends Component {
 
   render() {
     const { hasAnswered, category, text, difficulty, incorrectAnswers } = this.state;
-    const { setState } = this;
+    // const { setState } = this;
     // const { prop1, dispatch } = this.props;
     console.log(hasAnswered, difficulty, incorrectAnswers);
     return (
       <div>
         <Header />
-        <Timer parentSetState={ setState } />
+        {/* <Timer parentSetState={ setState } /> */}
         <div id="game-questions">
           <h2 data-testid="question-category">{ category }</h2>
           <h2 data-testid="question-text">{ text }</h2>
