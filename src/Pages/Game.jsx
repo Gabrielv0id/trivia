@@ -15,6 +15,7 @@ class Game extends Component {
     text: '',
     correctAwnser: '',
     incorrectAwnser: [],
+
     // This property is managed by 'Timer' child component
     timerHandle: {
       timerFinished: false,
@@ -28,7 +29,7 @@ class Game extends Component {
     const token = localStorage.getItem('token');
     this.setQuestions();
     startTimer();
-  }
+  };
 
   setQuestions = async () => {
     const { history } = this.props;
