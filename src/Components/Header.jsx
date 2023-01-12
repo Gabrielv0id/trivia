@@ -10,7 +10,6 @@ function Header(props) {
   const constructGravatarUrl = () => {
     const baseUrl = 'https://www.gravatar.com/avatar/';
     const hashedEmail = MD5(gravatarEmail).toString();
-    console.log(hashedEmail)
     return `${baseUrl}${hashedEmail}`;
   };
 

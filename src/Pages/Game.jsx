@@ -23,8 +23,8 @@ class Game extends Component {
     timerHandle: {
       timerFinished: false,
       timerValueWhenFinished: 0,
-      startTimer: () => {},
-      stopTimer: () => {},
+      startTimer: this.mockTimer,
+      stopTimer: this.mockTimer,
     },
   };
 
@@ -34,6 +34,8 @@ class Game extends Component {
     this.getQuestions(token);
     startTimer();
   }
+
+  mockTimer = () => {};
 
   setQuestions = () => {
     const { questions, currentQuestion } = this.state;
@@ -107,7 +109,7 @@ class Game extends Component {
     return (
       <div>
         <Header />
-        {/* <Timer parentSetState={ setState } /> */}
+        <Timer parentSetState={ setState } />
         <div id="game-questions">
           <h2 data-testid="question-category">{ category }</h2>
           <h2 data-testid="question-text">{ text }</h2>
