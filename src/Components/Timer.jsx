@@ -28,6 +28,7 @@ class Timer extends Component {
           timerFinished: timerFinishedState,
           timerValueWhenFinished: timer,
           startTimer: this.startTimer,
+          stopTimer: this.triggerFinishedTimer,
         },
       });
       return;

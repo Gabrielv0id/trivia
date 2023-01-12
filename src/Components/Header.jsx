@@ -9,7 +9,8 @@ function Header(props) {
 
   const constructGravatarUrl = () => {
     const baseUrl = 'https://www.gravatar.com/avatar/';
-    const hashedEmail = MD5(gravatarEmail);
+    const hashedEmail = MD5(gravatarEmail).toString();
+    console.log(hashedEmail)
     return `${baseUrl}${hashedEmail}`;
   };
 
@@ -17,11 +18,11 @@ function Header(props) {
     <div>
       <img
         data-testid="header-profile-picture"
-        src={ constructGravatarUrl }
+        src={ constructGravatarUrl() }
         alt="profile"
       />
-      <h6 data-testid="header-player-name">{ score }</h6>
-      <h6 data-testid="header-score">{ name }</h6>
+      <h6 data-testid="header-score">{ score }</h6>
+      <h6 data-testid="header-player-name">{ name }</h6>
     </div>
   );
 }
