@@ -47,6 +47,7 @@ class Game extends Component {
       shuffledAnswers: shuffle([correctAnswer, ...incorrectAnswers]),
       correctAnswer,
       incorrectAnswers,
+      hasAnswered: false,
     });
     timerHandle.startTimer();
   };
@@ -149,13 +150,28 @@ class Game extends Component {
     });
   };
 
+  changeQuestion = () => {
+    const { currentQuestion } = this.state;
+    const totalQuestions = 4;
+    if (currentQuestion < totalQuestions) {
+      this.setState((prevState) => ({
+        currentQuestion: prevState.currentQuestion + 1,
+      }));
+    }
+    this.setQuestions();
+  };
+
   render() {
-    const { timerHandle,
-      hasAnswered, category, text, difficulty, incorrectAnswers } = this.state;
-    const { timerFinished } = timerHandle;
-    if (timerFinished) this.triggerAnswer();
+    const {
+      hasAnswered,
+      category,
+      text,
+      difficulty,
+      incorrectAnswers,
+      currentQuestion,
+      questions } = this.state;
     // const { prop1, dispatch } = this.props;
-    console.log(hasAnswered, difficulty, incorrectAnswers);
+    console.log(difficulty, incorrectAnswers);
     return (
       <div>
         <Header />
@@ -165,11 +181,21 @@ class Game extends Component {
           triggerAnswer={ this.triggerAnswer }
         />
         <div id="game-questions">
-          <h2 data-testid="question-category">{ category }</h2>
-          <h2 data-testid="question-text">{ text }</h2>
+          <h2>{ currentQuestion + 1 }</h2>
+          <h3 data-testid="question-category">{ category }</h3>
+          <h3 data-testid="question-text">{ text }</h3>
           <div data-testid="answer-options">
             { this.renderShuffledAnswer() }
           </div>
+          {(hasAnswered && currentQuestion < questions.length - 1)
+          && (
+            <button
+              type="button"
+              onClick={ this.changeQuestion }
+              data-testid="btn-next"
+            >
+              Next
+            </button>)}
         </div>
       </div>
     );
