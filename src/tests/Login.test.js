@@ -4,7 +4,16 @@ import App from '../App';
 import { renderWithRouterAndRedux } from './helpers/renderWithRouterAndRedux';
 import userEvent from '@testing-library/user-event';
 
+const TOKEN = {
+    token: '123798328917897321'
+}
 describe('Testa a página de login e..', () => {
+    beforeEach(() => {
+        jest.spyOn(global, 'fetch')
+        global.fetch.mockResolvedValue({
+            json: jest.fn().mockResolvedValue(TOKEN)
+        })
+    })
     test('Verifica se o botão está inicialmente desabilitado', () => {
         renderWithRouterAndRedux(< App />);
         const playButton = screen.getByRole("button", { name: 'Play'});
@@ -28,6 +37,6 @@ describe('Testa a página de login e..', () => {
         const emailInput = screen.getByTestId('input-gravatar-email');
         userEvent.type(emailInput, 'raphael-ba@hotmail.com');
         userEvent.click(playButton);
-        expect(fetch).toHaveBeenCalled();
+        expect(global.fetch).toHaveBeenCalled();
     })
 })
