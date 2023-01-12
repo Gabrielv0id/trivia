@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import questionsAPI from '../API/questionsAPI';
 import Header from '../Components/Header';
-import Timer from '../Components/Timer';
+// import Timer from '../Components/Timer';
 import '../style/answersColors.style.css';
 import shuffle from '../util/shuffle';
 
@@ -20,7 +20,7 @@ class Game extends Component {
     shuffledAnswers: [],
 
     // This property is managed by 'Timer' child component
-    timerHandle: {
+    /* timerHandle: {
       timerFinished: false,
       timerValueWhenFinished: 0,
       startTimer: () => {},
@@ -32,7 +32,6 @@ class Game extends Component {
     const token = localStorage.getItem('token');
     this.getQuestions(token);
   }
-
   setQuestions = () => {
     const { questions, currentQuestion, timerHandle } = this.state;
     const { category, difficulty, question } = questions[currentQuestion];
