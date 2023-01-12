@@ -33,7 +33,7 @@ class Game extends Component {
     const token = localStorage.getItem('token');
     this.getQuestions(token);
   }
-  
+
   setQuestions = () => {
     const { questions, currentQuestion, timerHandle } = this.state;
     const { category, difficulty, question } = questions[currentQuestion];
@@ -68,23 +68,25 @@ class Game extends Component {
     const { timerHandle: { timerValueWhenFinished }, difficulty } = this.state;
     const buttonTestId = target.getAttribute('data-testid');
     let difficultySum;
-    switch(difficulty) {
-      case 'easy':
-        difficultySum = 1;
+    const THREE_POINTS = 3;
+    const TEN_POINTS = 10;
+    switch (difficulty) {
+    case 'easy':
+      difficultySum = 1;
       break;
-      case 'medium':
-        difficultySum = 2;
+    case 'medium':
+      difficultySum = 2;
       break;
-      case 'hard':
-        difficultySum = 3;
+    default:
+      difficultySum = THREE_POINTS;
       break;
     }
     if (buttonTestId.match(/correct-answer/)) {
-      const newScore = score + 10 + (timerValueWhenFinished * difficultySum);
+      const newScore = score + TEN_POINTS + (timerValueWhenFinished * difficultySum);
       console.log(newScore);
       dispatch(setNewScore(newScore));
     }
-  }
+  };
 
   triggerAnswer = () => {
     const { timerHandle } = this.state;
@@ -135,9 +137,9 @@ class Game extends Component {
           type="button"
           className={ hasAnswered ? eleClass : '' }
           data-testid={ dataTestId }
-          onClick={ (e) => { 
-            this.triggerAnswer()
-            this.updateScore(e) 
+          onClick={ (e) => {
+            this.triggerAnswer();
+            this.updateScore(e);
           } }
           disabled={ hasAnswered }
         >
@@ -180,7 +182,10 @@ const mapStateToProps = (state) => ({
 
 Game.propTypes = {
   // prop1: PropTypes.string.isRequired,
-  // dispatch: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  player: PropTypes.shape({
+    score: PropTypes.number.isRequired,
+  }).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
