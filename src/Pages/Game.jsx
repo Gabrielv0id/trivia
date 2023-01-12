@@ -1,8 +1,9 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import questionsAPI from '../API/questionsAPI';
 import Header from '../Components/Header';
+import Timer from '../Components/Timer';
 
 class Game extends Component {
   state = {
@@ -14,12 +15,21 @@ class Game extends Component {
     text: '',
     correctAwnser: '',
     incorrectAwnser: [],
+
+    // This property is managed by 'Timer' child component
+    timerHandle: {
+      timerFinished: false,
+      timerValueWhenFinished: 0,
+      startTimer: () => {},
+    },
   };
 
   componentDidMount() {
+    const { timerHandle: { startTimer } } = this.state;
     const token = localStorage.getItem('token');
-    const response = this.setQuestions();
-  }
+    this.setQuestions();
+    startTimer();
+  };
 
   setQuestions = async () => {
     const { history } = this.props;
@@ -45,10 +55,13 @@ class Game extends Component {
   render() {
     const { currentQuestion, questions, awnsered,
       category, difficulty, text, correctAwnser, incorrectAwnser } = this.state;
+    console.log(currentQuestion, questions, awnsered);
+    console.log(category, difficulty, text, correctAwnser, incorrectAwnser);
     // const { prop1, dispatch } = this.props;
     return (
       <div>
         <Header />
+        <Timer parentSetState={ this.setState } />
       </div>
     );
   }
