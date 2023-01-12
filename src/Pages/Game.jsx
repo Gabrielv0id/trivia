@@ -68,31 +68,23 @@ class Game extends Component {
     this.setState({ hasAnswered: true });
   };
 
-  manageParentComponent = (
-    firstTime = false,
-    timerFinishedState,
-    startTimer,
-    stopTimer,
-  ) => {
-    // Set parent component way of managing 'Timer' component
-    const { timer } = this.state;
-    if (firstTime) {
-      this.setState({
-        timerHandle: {
-          timerFinished: timerFinishedState,
-          timerValueWhenFinished: timer,
-          startTimer,
-          stopTimer,
-        },
-      });
-      return;
-    }
+  setTimerStartAndStop = (startTimer, stopTimer) => {
+    this.setState((prevState) => ({
+      timerHandle: {
+        ...prevState.timerHandle,
+        startTimer,
+        stopTimer,
+      },
+    }));
+  };
+
+  setTimerHandleState = (timerFinishedState, currentTime = 0) => {
     this.setState((prevState) => (
       {
         timerHandle: {
           ...prevState.timerHandle,
           timerFinished: timerFinishedState,
-          timerValueWhenFinished: timer,
+          timerValueWhenFinished: currentTime,
         },
       }
     ));
@@ -140,7 +132,9 @@ class Game extends Component {
       <div>
         <Header />
         <Timer
-          manageParentComponent={ this.manageParentComponent }
+          setTimerHandleState={ this.setTimerHandleState }
+          setTimerStartAndStop={ this.setTimerStartAndStop }
+          triggerAnswer={ this.triggerAnswer }
         />
         <div id="game-questions">
           <h2 data-testid="question-category">{ category }</h2>

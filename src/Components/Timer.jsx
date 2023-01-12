@@ -8,15 +8,8 @@ class Timer extends Component {
   };
 
   componentDidMount() {
-    const { manageParentComponent } = this.props;
-    const FIRST_TIME = true;
-    const TIMER_FINISHED = false;
-    manageParentComponent(
-      FIRST_TIME,
-      TIMER_FINISHED,
-      this.startTimer,
-      this.triggerFinishedTimer,
-    );
+    const { setTimerStartAndStop } = this.props;
+    setTimerStartAndStop(this.startTimer, this.stopTimer);
   }
 
   stopTimer = () => {
@@ -25,11 +18,13 @@ class Timer extends Component {
   };
 
   triggerFinishedTimer = () => {
-    const { manageParentComponent } = this.props;
+    const { timer } = this.state;
+    const { setTimerHandleState, triggerAnswer } = this.props;
+
+    const HAS_TIMER_FINISHED = true;
     this.stopTimer();
-    const FIRST_TIME = false;
-    const TIMER_FINISHED = true;
-    manageParentComponent(FIRST_TIME, TIMER_FINISHED);
+    setTimerHandleState(HAS_TIMER_FINISHED, timer);
+    triggerAnswer();
   };
 
   decreaseTimer = () => {
@@ -47,13 +42,13 @@ class Timer extends Component {
   };
 
   setTimerInitialState = () => {
-    const { manageParentComponent } = this.props;
+    const { setTimerHandleState } = this.props;
     this.setState({
       timer: 30,
     });
-    const FIRST_TIME = false;
-    const TIMER_FINISHED = false;
-    manageParentComponent(FIRST_TIME, TIMER_FINISHED);
+    const HAS_TIMER_FINISHED = false;
+    const THIRTY_SECONDS = 30;
+    setTimerHandleState(HAS_TIMER_FINISHED, THIRTY_SECONDS);
   };
 
   startTimer = () => {
@@ -79,7 +74,9 @@ class Timer extends Component {
 }
 
 Timer.propTypes = {
-  manageParentComponent: PropTypes.func.isRequired,
+  setTimerHandleState: PropTypes.func.isRequired,
+  triggerAnswer: PropTypes.func.isRequired,
+  setTimerStartAndStop: PropTypes.func.isRequired,
 };
 
 export default Timer;
