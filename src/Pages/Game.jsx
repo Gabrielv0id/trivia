@@ -32,6 +32,7 @@ class Game extends Component {
     const token = localStorage.getItem('token');
     this.getQuestions(token);
     const response = this.setQuestions();
+    this.setQuestions();
     startTimer();
   }
 
@@ -67,6 +68,8 @@ class Game extends Component {
   render() {
     const { currentQuestion, questions, answered,
       category, difficulty, text, correctAnswer, incorrectAnswers } = this.state;
+    console.log(currentQuestion, questions, awnsered);
+    console.log(category, difficulty, text, correctAwnser, incorrectAwnser);
     // const { prop1, dispatch } = this.props;
     return (
       <div>
