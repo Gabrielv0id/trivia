@@ -152,13 +152,15 @@ class Game extends Component {
 
   changeQuestion = () => {
     const { currentQuestion } = this.state;
+    const { history } = this.props;
     const totalQuestions = 4;
     if (currentQuestion < totalQuestions) {
       this.setState((prevState) => ({
         currentQuestion: prevState.currentQuestion + 1,
-      }));
+      }), this.setQuestions);
+    } else {
+      history.push('/feedbacks');
     }
-    this.setQuestions();
   };
 
   render() {
@@ -187,7 +189,7 @@ class Game extends Component {
           <div data-testid="answer-options">
             { this.renderShuffledAnswer() }
           </div>
-          {(hasAnswered && currentQuestion < questions.length - 1)
+          {(hasAnswered && currentQuestion < questions.length)
           && (
             <button
               type="button"
