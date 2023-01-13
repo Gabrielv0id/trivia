@@ -166,7 +166,7 @@ class Game extends Component {
           triggerAnswer={ this.triggerAnswer }
         />
         <div id="game-questions">
-          <h2>{ currentQuestion + 1 }</h2>
+          <h2 data-testid="current-question">{ currentQuestion + 1 }</h2>
           <h3 data-testid="question-category">{ category }</h3>
           <h3 data-testid="question-text">{ text }</h3>
           <div data-testid="answer-options">
