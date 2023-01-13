@@ -17,7 +17,7 @@ export default function App() {
         <Route exact path="/" render={ (props) => <Login { ...props } /> } />
         <Route path="/game" render={ (props) => <Game { ...props } /> } />
         <Route path="/settings" render={ () => <Settings /> } />
-        <Route path="/feedbacks" render={ () => <Feedbacks /> } />
+        <Route path="/feedbacks" render={ (props) => <Feedbacks { ...props } /> } />
         <Route path="/ranking" render={ () => <Ranking /> } />
       </header>
     </div>

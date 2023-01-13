@@ -1,13 +1,76 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Header from '../Components/Header';
 
-function Feedbacks() {
-  return (
-    <div>
-      <div data-testid="feedback-text">content</div>
-      <Header />
-    </div>
-  );
+class Feedbacks extends Component {
+  redirect = (param) => {
+    const { history } = this.props;
+    switch (param) {
+    case 'button_playAgain':
+      return history.push('/');
+    case 'button_Ranking':
+      return history.push('/Ranking');
+    default:
+      return 'error';
+    }
+  };
+
+  render() {
+    const { player } = this.props;
+    const { score, assertions } = player;
+    const value = 3;
+
+    return (
+      <div data-testid="feedback-text">
+        <Header />
+        <h2 data-testid="feedback-total-score">
+          {score}
+        </h2>
+        <h3 data-testid="feedback-total-question">
+          {assertions}
+        </h3>
+        <button
+          type="button"
+          data-testid="btn-play-again"
+          onClick={ () => {
+            this.redirect('button_playAgain');
+          } }
+        >
+          Play Again
+        </button>
+        <button
+          type="button"
+          data-testid="btn-ranking"
+          onClick={ () => {
+            this.redirect('button_Ranking');
+          } }
+        >
+          Ranking
+        </button>
+        {
+          (assertions < value) ? <span>Could be better...</span> : <span>Well Done!</span>
+        }
+
+      </div>
+    );
+  }
 }
 
-export default Feedbacks;
+const mapStateToProps = (state) => ({
+  ...state,
+});
+
+Feedbacks.propTypes = {
+  player: PropTypes.shape({
+    gravatarEmail: PropTypes.string.isRequired,
+    score: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    assertions: PropTypes.number.isRequired,
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
+
+export default connect(mapStateToProps)(Feedbacks);

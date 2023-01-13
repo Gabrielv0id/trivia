@@ -6,7 +6,7 @@ import Header from '../Components/Header';
 import Timer from '../Components/Timer';
 import '../style/answersColors.style.css';
 import shuffle from '../util/shuffle';
-import { setNewScore } from '../redux/actions';
+import { setNewScore, setAssertions } from '../redux/actions';
 
 class Game extends Component {
   state = {
@@ -81,7 +81,9 @@ class Game extends Component {
     }
     if (buttonTestId.match(/correct-answer/)) {
       const newScore = score + TEN_POINTS + (timeWhenTimerFinished * difficultySum);
+      const newAssertions = assertions + 1;
       dispatch(setNewScore(newScore));
+      dispatch(setAssertions(newAssertions));
     }
   };
 
@@ -195,6 +197,7 @@ Game.propTypes = {
   player: PropTypes.shape({
     score: PropTypes.number.isRequired,
     timeWhenTimerFinished: PropTypes.number.isRequired,
+    assertions: PropTypes.number.isRequired,
   }).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
