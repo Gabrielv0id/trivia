@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { setTimeWhenFinishedAction } from '../redux/actions';
 
 class Timer extends Component {
   state = {
@@ -13,17 +15,16 @@ class Timer extends Component {
   }
 
   stopTimer = () => {
-    const { timerId } = this.state;
+    const { timer, timerId } = this.state;
+    const { dispatch } = this.props;
     clearInterval(timerId);
+    dispatch(setTimeWhenFinishedAction(timer));
   };
 
   triggerFinishedTimer = () => {
-    const { timer } = this.state;
-    const { setTimerHandleState, triggerAnswer } = this.props;
+    const { triggerAnswer } = this.props;
 
-    const HAS_TIMER_FINISHED = true;
     this.stopTimer();
-    setTimerHandleState(HAS_TIMER_FINISHED, timer);
     triggerAnswer();
   };
 
@@ -42,13 +43,9 @@ class Timer extends Component {
   };
 
   setTimerInitialState = () => {
-    const { setTimerHandleState } = this.props;
     this.setState({
       timer: 30,
     });
-    const HAS_TIMER_FINISHED = false;
-    const THIRTY_SECONDS = 30;
-    setTimerHandleState(HAS_TIMER_FINISHED, THIRTY_SECONDS);
   };
 
   startTimer = () => {
@@ -66,17 +63,21 @@ class Timer extends Component {
   render() {
     const { timer } = this.state;
     return (
-      <div>
+      <div data-testid="timer">
         { timer }
       </div>
     );
   }
 }
 
+const mapStateToProps = (state) => ({
+  ...state,
+});
+
 Timer.propTypes = {
-  setTimerHandleState: PropTypes.func.isRequired,
   triggerAnswer: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
   setTimerStartAndStop: PropTypes.func.isRequired,
 };
 
-export default Timer;
+export default connect(mapStateToProps)(Timer);

@@ -4,6 +4,7 @@ import React from 'react';
 import { MD5 } from 'crypto-js';
 
 function Header(props) {
+  console.log(props);
   const { player } = props;
   const { gravatarEmail, score, name } = player;
 
