@@ -1,10 +1,12 @@
-import { EXEMPLO_ACTION, SET_NAME_AND_EMAIL, SET_NEW_SCORE } from './actions';
+import { EXEMPLO_ACTION, SET_NAME_AND_EMAIL, SET_NEW_SCORE,
+  SET_TIME_WHEN_FINISHED } from './actions';
 
 const INITIAL_STATE = {
   name: 'nome-da-pessoa',
   assertions: 0,
   score: 0,
   gravatarEmail: 'email-da-pessoa',
+  timeWhenTimerFinished: 30,
 };
 const playerReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -20,6 +22,11 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       score: action.payload.score,
+    };
+  case SET_TIME_WHEN_FINISHED:
+    return {
+      ...state,
+      timeWhenTimerFinished: action.payload,
     };
   default:
     return { ...state };

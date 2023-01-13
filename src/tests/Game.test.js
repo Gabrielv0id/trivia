@@ -1,8 +1,10 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { getByTestId, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import App from '../App';
 import { renderWithRouterAndRedux } from './helpers/renderWithRouterAndRedux';
 import userEvent from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
+
 const mockResponse = {
     response_code:0,
     results:[
@@ -40,9 +42,9 @@ describe('Testa a página do jogo e..', () => {
         global.fetch.mockResolvedValue({
             json: jest.fn().mockResolvedValue(errorResponse)
         })
-        const inputEmail = await screen.findByTestId('input-gravatar-email');
-        expect(inputEmail).toBeInTheDocument();
-        expect(history.location.pathname).toBe('/')
+        await waitFor(() => {
+            expect(history.location.pathname).toBe('/')
+        })
     })
     test('Verifica se estamos na página do jogo e é possível jogar.', async () => {
         const algumaCoisa = await screen.findByTestId('question-category');
@@ -94,4 +96,34 @@ describe('Testa a página do jogo e..', () => {
         const feedbackText = await screen.findByTestId('feedback-text');
         expect(feedbackText).toBeInTheDocument();
     })
+    test('Verifica se o timer está contando apropriadamente', async () => {
+        await waitFor(() => {
+            screen.getByTestId('correct-answer');
+            expect()
+        });
+        const timer = screen.getByTestId('timer')
+        expect(timer).toHaveTextContent('30');
+        await waitFor(() => {
+            expect(timer).toHaveTextContent('29')
+        }, { timeout: 10000 })
+    })
+    test('Verifica se quando o tempo acaba, os botões são disabilitados ', async () => {
+        const THIRTY_SECONDS = 35000;
+        await waitFor(() => {
+            screen.getByTestId('correct-answer');
+        }, { timeout: 10000 })
+        const currentScore = screen.getByTestId('header-score');
+        expect(currentScore).toHaveTextContent('0');
+        const timer = screen.getByTestId('timer')
+        expect(timer).toBeInTheDocument()
+        await waitFor(() => {
+            expect(timer.textContent).toBe('0'); 
+        }, { timeout: THIRTY_SECONDS})
+        const button = screen.getByTestId('correct-answer')
+        expect(button).toBeInTheDocument()
+        await waitFor(() => {
+            expect(button).toBeDisabled()
+        }, { timeout: 10000})
+        expect(currentScore).toHaveTextContent('0')
+    }, 60000)
 })

@@ -17,13 +17,10 @@ class Game extends Component {
     difficulty: '',
     text: '',
     correctAnswer: '',
-    incorrectAnswers: [],
     shuffledAnswers: [],
 
     // This property is managed by 'Timer' child component
     timerHandle: {
-      timerFinished: false,
-      timerValueWhenFinished: 0,
       startTimer: () => {},
       stopTimer: () => {},
     },
@@ -46,7 +43,6 @@ class Game extends Component {
       text: question,
       shuffledAnswers: shuffle([correctAnswer, ...incorrectAnswers]),
       correctAnswer,
-      incorrectAnswers,
       hasAnswered: false,
     });
     timerHandle.startTimer();
@@ -65,8 +61,9 @@ class Game extends Component {
   };
 
   updateScore = ({ target }) => {
-    const { player: { score }, dispatch } = this.props;
-    const { timerHandle: { timerValueWhenFinished }, difficulty } = this.state;
+    const { player, dispatch } = this.props;
+    const { score, timeWhenTimerFinished } = player;
+    const { difficulty } = this.state;
     const buttonTestId = target.getAttribute('data-testid');
     let difficultySum;
     const THREE_POINTS = 3;
@@ -83,7 +80,7 @@ class Game extends Component {
       break;
     }
     if (buttonTestId.match(/correct-answer/)) {
-      const newScore = score + TEN_POINTS + (timerValueWhenFinished * difficultySum);
+      const newScore = score + TEN_POINTS + (timeWhenTimerFinished * difficultySum);
       dispatch(setNewScore(newScore));
     }
   };
@@ -102,18 +99,6 @@ class Game extends Component {
         stopTimer,
       },
     }));
-  };
-
-  setTimerHandleState = (timerFinishedState, currentTime = 0) => {
-    this.setState((prevState) => (
-      {
-        timerHandle: {
-          ...prevState.timerHandle,
-          timerFinished: timerFinishedState,
-          timerValueWhenFinished: currentTime,
-        },
-      }
-    ));
   };
 
   renderShuffledAnswer = () => {
@@ -167,17 +152,14 @@ class Game extends Component {
       hasAnswered,
       category,
       text,
-      difficulty,
-      incorrectAnswers,
       currentQuestion,
-      questions } = this.state;
+      questions,
+    } = this.state;
     // const { prop1, dispatch } = this.props;
-    console.log(difficulty, incorrectAnswers);
     return (
       <div>
         <Header />
         <Timer
-          setTimerHandleState={ this.setTimerHandleState }
           setTimerStartAndStop={ this.setTimerStartAndStop }
           triggerAnswer={ this.triggerAnswer }
         />
@@ -212,6 +194,7 @@ Game.propTypes = {
   dispatch: PropTypes.func.isRequired,
   player: PropTypes.shape({
     score: PropTypes.number.isRequired,
+    timeWhenTimerFinished: PropTypes.number.isRequired,
   }).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,

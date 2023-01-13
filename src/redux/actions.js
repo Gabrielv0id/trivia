@@ -1,6 +1,7 @@
 export const EXEMPLO_ACTION = 'EXEMPLO_ACTION';
 export const SET_NAME_AND_EMAIL = 'SET_NAME_AND_EMAIL';
 export const SET_NEW_SCORE = 'SET_NEW_SCORE';
+export const SET_TIME_WHEN_FINISHED = 'TIME_WHEN_FINISHED';
 
 export const exempleAction = (parameter) => ({
   type: EXEMPLO_ACTION,
@@ -15,4 +16,9 @@ export const setNameNadEmailAction = ({ name, email }) => ({
 export const setNewScore = (newScore) => ({
   type: SET_NEW_SCORE,
   payload: { score: newScore },
+});
+
+export const setTimeWhenFinishedAction = (time) => ({
+  type: SET_TIME_WHEN_FINISHED,
+  payload: time,
 });
