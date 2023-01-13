@@ -4,9 +4,16 @@ import PropTypes from 'prop-types';
 import Header from '../Components/Header';
 
 class Feedbacks extends Component {
-  redirect = () => {
+  redirect = (param) => {
     const { history } = this.props;
-    history.push('/');
+    switch (param) {
+    case 'button_playAgain':
+      return history.push('/');
+    case 'button_Ranking':
+      return history.push('/Ranking');
+    default:
+      return 'error';
+    }
   };
 
   render() {
@@ -23,8 +30,23 @@ class Feedbacks extends Component {
         <h3 data-testid="feedback-total-question">
           {assertions}
         </h3>
-        <button type="button" data-testid="btn-play-again" onClick={ this.redirect }>
+        <button
+          type="button"
+          data-testid="btn-play-again"
+          onClick={ () => {
+            this.redirect('button_playAgain');
+          } }
+        >
           Play Again
+        </button>
+        <button
+          type="button"
+          data-testid="btn-ranking"
+          onClick={ () => {
+            this.redirect('button_Ranking');
+          } }
+        >
+          Ranking
         </button>
         {
           (assertions < value) ? <span>Could be better...</span> : <span>Well Done!</span>

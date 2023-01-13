@@ -6,7 +6,11 @@ class Ranking extends Component {
   render() {
     // const { prop1, dispatch } = this.props;
     return (
-      <div>content</div>
+      <div>
+        <h3 data-testid="ranking-title">
+          Ranking
+        </h3>
+      </div>
     );
   }
 }
