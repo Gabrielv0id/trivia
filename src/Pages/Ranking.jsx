@@ -8,20 +8,11 @@ class Ranking extends Component {
     history.push('/');
   };
 
-  saveAndOrderRankedPeople = (param) => {
-    const magicNumber = -1;
-    param.sort((a, b) => {
-      if (a.score > b.score) {
-        return magicNumber;
-      } return true;
-    });
-  };
-
   render() {
     // const { prop1, dispatch } = this.props;
-    const rankedPeople = JSON.parse(localStorage.getItem('rankedPeople'));
-    this.saveAndOrderRankedPeople(rankedPeople);
-    localStorage.setItem('rankedPeople', JSON.stringify(rankedPeople));
+    const rankedPeople = JSON.parse(localStorage.getItem('rankedPeople')) || [];
+
+    // localStorage.setItem('rankedPeople', JSON.stringify(rankedPeople));
 
     return (
       <div>
