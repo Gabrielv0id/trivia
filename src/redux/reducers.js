@@ -8,6 +8,7 @@ const INITIAL_STATE = {
   gravatarEmail: 'email-da-pessoa',
   timeWhenTimerFinished: 30,
 };
+
 const playerReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case EXEMPLO_ACTION:
@@ -27,6 +28,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       timeWhenTimerFinished: action.payload,
+    };
   case SET_ASSERTIONS:
     return {
       ...state,
