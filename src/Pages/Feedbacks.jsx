@@ -16,10 +16,36 @@ class Feedbacks extends Component {
     }
   };
 
+  rankingSave = () => {
+    const imageProfile = localStorage.getItem('imageProfile');
+    const { player } = this.props;
+    const { score, name } = player;
+    const getItem = localStorage.getItem('rankedPeople');
+
+    const array = [];
+
+    const ranked = {
+      name,
+      score,
+      imageProfile,
+    };
+
+    if (getItem !== null) {
+      const rankedPeople = JSON.parse(localStorage.getItem('rankedPeople'));
+      rankedPeople.push(ranked);
+      localStorage.setItem('rankedPeople', JSON.stringify(rankedPeople));
+    } else {
+      array.push(ranked);
+      localStorage.setItem('rankedPeople', JSON.stringify(array));
+    }
+  };
+
   render() {
     const { player } = this.props;
     const { score, assertions } = player;
     const value = 3;
+
+    this.rankingSave();
 
     return (
       <div data-testid="feedback-text">

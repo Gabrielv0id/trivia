@@ -14,6 +14,13 @@ function Header(props) {
     return `${baseUrl}${hashedEmail}`;
   };
 
+  const savedImgLocalStoraage = () => {
+    const img = constructGravatarUrl();
+    localStorage.setItem('imageProfile', img);
+  };
+
+  savedImgLocalStoraage();
+
   return (
     <div>
       <img
