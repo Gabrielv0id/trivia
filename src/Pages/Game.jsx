@@ -62,7 +62,7 @@ class Game extends Component {
 
   updateScore = ({ target }) => {
     const { player, dispatch } = this.props;
-    const { score, timeWhenTimerFinished } = player;
+    const { score, timeWhenTimerFinished, assertions } = player;
     const { difficulty } = this.state;
     const buttonTestId = target.getAttribute('data-testid');
     let difficultySum;

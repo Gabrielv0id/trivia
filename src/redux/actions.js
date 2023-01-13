@@ -22,6 +22,8 @@ export const setNewScore = (newScore) => ({
 export const setTimeWhenFinishedAction = (time) => ({
   type: SET_TIME_WHEN_FINISHED,
   payload: time,
+});
+
 export const setAssertions = (assertion) => ({
   type: SET_ASSERTIONS,
   payload: { assertions: assertion },
