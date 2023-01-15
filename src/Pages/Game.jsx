@@ -21,8 +21,8 @@ class Game extends Component {
 
     // This property is managed by 'Timer' child component
     timerHandle: {
-      startTimer: () => {},
-      stopTimer: () => {},
+      startTimer: null,
+      stopTimer: null,
     },
   };
 
