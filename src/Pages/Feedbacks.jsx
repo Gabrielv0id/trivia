@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Header from '../Components/Header';
 import { resetScoreAction } from '../redux/actions';
 
+let number = 0;
+
 class Feedbacks extends Component {
   redirect = (param) => {
     const { history } = this.props;
@@ -23,8 +25,6 @@ class Feedbacks extends Component {
     const { score, name } = player;
     const getItem = localStorage.getItem('rankedPeople');
 
-    const array = [];
-
     const ranked = {
       name,
       score,
@@ -32,12 +32,17 @@ class Feedbacks extends Component {
     };
 
     if (getItem !== null) {
+      number += 1;
+      ranked.number = number;
       const rankedPeople = JSON.parse(localStorage.getItem('rankedPeople'));
       rankedPeople.push(ranked);
       localStorage.setItem('rankedPeople', JSON.stringify(rankedPeople));
+
+      rankedPeople.sort((a, b) => b.score - a.score);
+      ranked.number = number;
+      localStorage.setItem('rankedPeople', JSON.stringify(rankedPeople));
     } else {
-      array.push(ranked);
-      localStorage.setItem('rankedPeople', JSON.stringify(array));
+      localStorage.setItem('rankedPeople', JSON.stringify([ranked]));
     }
   };
 
