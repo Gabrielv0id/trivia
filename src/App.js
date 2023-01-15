@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import logo from './trivia.png';
 import './App.css';
 import Login from './Pages/Login';
-import Feedbacks from './Pages/Feedbacks';
+import Feedbacks from './Pages/Feedback';
 import Settings from './Pages/Settings';
 import Ranking from './Pages/Ranking';
 import Game from './Pages/Game';
