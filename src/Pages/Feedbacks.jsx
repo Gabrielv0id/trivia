@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../Components/Header';
+import { resetScoreAction } from '../redux/actions';
+
+let number = 0;
 
 class Feedbacks extends Component {
   redirectToLogin = () => {
@@ -14,10 +17,44 @@ class Feedbacks extends Component {
     history.push('/Ranking');
   };
 
+  rankingSave = () => {
+    const imageProfile = localStorage.getItem('imageProfile');
+    const { player } = this.props;
+    const { score, name } = player;
+    const getItem = localStorage.getItem('rankedPeople');
+
+    const ranked = {
+      name,
+      score,
+      imageProfile,
+    };
+
+    if (getItem !== null) {
+      number += 1;
+      ranked.number = number;
+      const rankedPeople = JSON.parse(localStorage.getItem('rankedPeople'));
+      rankedPeople.push(ranked);
+      localStorage.setItem('rankedPeople', JSON.stringify(rankedPeople));
+
+      rankedPeople.sort((a, b) => b.score - a.score);
+      ranked.number = number;
+      localStorage.setItem('rankedPeople', JSON.stringify(rankedPeople));
+    } else {
+      localStorage.setItem('rankedPeople', JSON.stringify([ranked]));
+    }
+  };
+
+  resetScore = () => {
+    const { dispatch } = this.props;
+    dispatch(resetScoreAction());
+  };
+
   render() {
     const { player } = this.props;
     const { score, assertions } = player;
     const value = 3;
+
+    this.rankingSave();
 
     return (
       <div data-testid="feedback-text">
@@ -31,7 +68,10 @@ class Feedbacks extends Component {
         <button
           type="button"
           data-testid="btn-play-again"
-          onClick={ this.redirectToLogin }
+          onClick={ () => {
+            this.redirectToLogin();
+            this.resetScore();
+          } }
         >
           Play Again
         </button>
@@ -56,6 +96,7 @@ const mapStateToProps = (state) => ({
 });
 
 Feedbacks.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   player: PropTypes.shape({
     gravatarEmail: PropTypes.string.isRequired,
     score: PropTypes.number.isRequired,
