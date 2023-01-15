@@ -69,7 +69,7 @@ class Feedbacks extends Component {
           type="button"
           data-testid="btn-play-again"
           onClick={ () => {
-            this.redirect('button_playAgain');
+            this.redirectToLogin();
             this.resetScore();
           } }
         >
