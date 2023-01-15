@@ -7,16 +7,14 @@ import { resetScoreAction } from '../redux/actions';
 let number = 0;
 
 class Feedbacks extends Component {
-  redirect = (param) => {
+  redirectToLogin = () => {
     const { history } = this.props;
-    switch (param) {
-    case 'button_playAgain':
-      return history.push('/');
-    case 'button_Ranking':
-      return history.push('/Ranking');
-    default:
-      return 'error';
-    }
+    history.push('/');
+  };
+
+  redirectToRanking = () => {
+    const { history } = this.props;
+    history.push('/Ranking');
   };
 
   rankingSave = () => {
@@ -80,9 +78,7 @@ class Feedbacks extends Component {
         <button
           type="button"
           data-testid="btn-ranking"
-          onClick={ () => {
-            this.redirect('button_Ranking');
-          } }
+          onClick={ this.redirectToRanking }
         >
           Ranking
         </button>

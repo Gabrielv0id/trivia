@@ -64,10 +64,14 @@ describe('Testa a página do jogo e..', () => {
     })
     test('Verifica se após clicar na resposta e no botão de next, a próxima pergunta é exibida, até chegar a última e o score atualiza corretamente para as perguntas hard e easy e no fim, vai para a página de feedbacks', async () => {
         const correctAnswer = await screen.findByTestId('correct-answer');
+        const currentQuestionIndex = screen.getByTestId('current-question')
+        expect(currentQuestionIndex).toHaveTextContent('1');
         userEvent.click(correctAnswer);
         const nextButton = await screen.findByTestId('btn-next');
         userEvent.click(nextButton);
+
         const actualQuestion = await screen.findByTestId('question-text');
+        expect(currentQuestionIndex).toHaveTextContent('2');
         expect(actualQuestion).toHaveTextContent('List the following Iranic empires in chronological order:')
         const correctAnswer2 = await screen.findByTestId('correct-answer');
         userEvent.click(correctAnswer2);
