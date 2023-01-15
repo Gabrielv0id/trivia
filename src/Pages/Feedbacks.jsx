@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../Components/Header';
+import { resetScoreAction } from '../redux/actions';
 
 class Feedbacks extends Component {
   redirect = (param) => {
@@ -40,6 +41,11 @@ class Feedbacks extends Component {
     }
   };
 
+  resetScore = () => {
+    const { dispatch } = this.props;
+    dispatch(resetScoreAction());
+  };
+
   render() {
     const { player } = this.props;
     const { score, assertions } = player;
@@ -61,6 +67,7 @@ class Feedbacks extends Component {
           data-testid="btn-play-again"
           onClick={ () => {
             this.redirect('button_playAgain');
+            this.resetScore();
           } }
         >
           Play Again
@@ -88,6 +95,7 @@ const mapStateToProps = (state) => ({
 });
 
 Feedbacks.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   player: PropTypes.shape({
     gravatarEmail: PropTypes.string.isRequired,
     score: PropTypes.number.isRequired,

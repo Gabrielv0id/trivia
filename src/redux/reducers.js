@@ -1,5 +1,5 @@
 import { EXEMPLO_ACTION, SET_NAME_AND_EMAIL, SET_NEW_SCORE,
-  SET_TIME_WHEN_FINISHED, SET_ASSERTIONS } from './actions';
+  SET_TIME_WHEN_FINISHED, SET_ASSERTIONS, RESET_SCORE } from './actions';
 
 const INITIAL_STATE = {
   name: 'nome-da-pessoa',
@@ -33,6 +33,15 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       assertions: action.payload.assertions,
+    };
+  case RESET_SCORE:
+    return {
+      ...state,
+      assertions: action.payload.assertions,
+      score: action.payload.score,
+      gravatarEmail: action.payload.gravatarEmail,
+      name: action.payload.name,
+      timeWhenTimerFinished: action.payload.timeWhenTimerFinished,
     };
   default:
     return { ...state };
