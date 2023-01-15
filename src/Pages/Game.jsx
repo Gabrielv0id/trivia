@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import questionsAPI from '../API/questionsAPI';
 import Header from '../Components/Header';
 import Timer from '../Components/Timer';
 import '../style/answersColors.style.css';
@@ -33,6 +32,8 @@ class Game extends Component {
 
   setQuestions = () => {
     const { questions, currentQuestion, timerHandle } = this.state;
+    console.log(questions);
+    console.log(questions[currentQuestion]);
     const { category, difficulty, question } = questions[currentQuestion];
     const correctAnswer = questions[currentQuestion].correct_answer;
     const incorrectAnswers = questions[currentQuestion].incorrect_answers;
@@ -48,9 +49,23 @@ class Game extends Component {
     timerHandle.startTimer();
   };
 
+  fetchQuestions = async (TOKEN) => {
+    const { player: { URL } } = this.props;
+    let constructuredURL = `${URL}${TOKEN}`;
+    if (URL !== 'https://opentdb.com/api.php?amount=5&token=') constructuredURL = `${URL}`;
+    const response = await fetch(constructuredURL);
+    const json = await response.json();
+    const RESPONSE_CODE_ERROR = 3;
+    if (json.response_code === RESPONSE_CODE_ERROR) {
+      return false;
+    }
+    console.log(json);
+    return json.results;
+  };
+
   getQuestions = async (token) => {
     const { history } = this.props;
-    const response = await questionsAPI(token);
+    const response = await this.fetchQuestions(token);
 
     // If response_code is invalid, return to initial page
     if (!response) history.push('/');
@@ -198,6 +213,7 @@ Game.propTypes = {
     score: PropTypes.number.isRequired,
     timeWhenTimerFinished: PropTypes.number.isRequired,
     assertions: PropTypes.number.isRequired,
+    URL: PropTypes.string.isRequired,
   }).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,

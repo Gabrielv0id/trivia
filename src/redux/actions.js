@@ -4,6 +4,7 @@ export const SET_NEW_SCORE = 'SET_NEW_SCORE';
 export const SET_TIME_WHEN_FINISHED = 'TIME_WHEN_FINISHED';
 export const SET_ASSERTIONS = 'SET_ASSERTIONS';
 export const RESET_SCORE = 'RESET_SCORE';
+export const SET_URL = 'SET_URL';
 
 export const exempleAction = (parameter) => ({
   type: EXEMPLO_ACTION,
@@ -34,4 +35,10 @@ export const resetScoreAction = () => ({
   type: RESET_SCORE,
   payload: {
     score: 0, assertions: 0, name: '', gravatarEmail: '', timeWhenTimerFinished: 0 },
+});
+
+export const setUrl = (url) => ({
+  type: SET_URL,
+  payload: {
+    url },
 });

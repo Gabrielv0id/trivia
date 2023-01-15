@@ -16,7 +16,7 @@ export default function App() {
         <p>SUA VEZ</p>
         <Route exact path="/" render={ (props) => <Login { ...props } /> } />
         <Route path="/game" render={ (props) => <Game { ...props } /> } />
-        <Route path="/settings" render={ () => <Settings /> } />
+        <Route path="/settings" render={ (props) => <Settings { ...props } /> } />
         <Route path="/feedbacks" render={ (props) => <Feedbacks { ...props } /> } />
         <Route path="/ranking" render={ (props) => <Ranking { ...props } /> } />
       </header>

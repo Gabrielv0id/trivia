@@ -1,5 +1,5 @@
 import { EXEMPLO_ACTION, SET_NAME_AND_EMAIL, SET_NEW_SCORE,
-  SET_TIME_WHEN_FINISHED, SET_ASSERTIONS, RESET_SCORE } from './actions';
+  SET_TIME_WHEN_FINISHED, SET_ASSERTIONS, RESET_SCORE, SET_URL } from './actions';
 
 const INITIAL_STATE = {
   name: 'nome-da-pessoa',
@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   score: 0,
   gravatarEmail: 'email-da-pessoa',
   timeWhenTimerFinished: 30,
+  URL: 'https://opentdb.com/api.php?amount=5&token=',
 };
 
 const playerReducer = (state = INITIAL_STATE, action) => {
@@ -42,6 +43,11 @@ const playerReducer = (state = INITIAL_STATE, action) => {
       gravatarEmail: action.payload.gravatarEmail,
       name: action.payload.name,
       timeWhenTimerFinished: action.payload.timeWhenTimerFinished,
+    };
+  case SET_URL:
+    return {
+      ...state,
+      URL: action.payload.url,
     };
   default:
     return { ...state };
